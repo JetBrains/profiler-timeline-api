@@ -8,9 +8,6 @@
 #include <evntprov.h>
 #include <winerror.h>
 
-#include <string>
-
-
 namespace events::etw {
 
     //////////////////////////////////
@@ -103,7 +100,6 @@ namespace events::etw {
             else if constexpr(std::is_trivial_v<type> && std::is_standard_layout_v<type>)
                 return { reinterpret_cast<const uint8_t *>(&arg), sizeof(type) };
             else {
-                // std::string a = arg;
                 static_assert(detail::false_v<type>, "Unsupported type: only trivial types and C-strings are supported");
                 return {};
             }
