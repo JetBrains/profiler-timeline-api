@@ -40,9 +40,9 @@ void __stdcall OnProviderEnableTrampoline(bool isEnabled, uint64_t matchAnyKeywo
 }
 
 extern "C" __declspec(dllexport)
-uint64_t __cdecl RegisterProvider(GUID providerGuid, uint64_t onEnableCallback, char ** error)
+    uint64_t __cdecl RegisterProvider(uint64_t onEnableCallback, char ** error)
 {
-    result_t<uint64_t> handle = register_provider<&OnProviderEnableTrampoline>(providerGuid, reinterpret_cast<void *>(onEnableCallback));
+    result_t<uint64_t> handle = register_provider<&OnProviderEnableTrampoline>(JetBrains_Common_DebugOutput::guid, reinterpret_cast<void *>(onEnableCallback));
     return check_result(handle, error) ? handle : 0;
 }
 
