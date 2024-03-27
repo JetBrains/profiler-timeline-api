@@ -40,14 +40,13 @@ namespace events {
             return result;
         }
 
-        operator const T & () const { return get(); }
-
-        template <class Func>
-        auto then(Func && func) && -> std::invoke_result_t<std::decay_t<Func>, T> {
-            if(this->operator bool())
-                return std::invoke(std::forward<Func>(func), std::move(result));
-            return { std::move(error.value), error.message };
+        const error_t * try_get_error() const noexcept {
+            if(is_error)
+                return &error;
+            return nullptr;
         }
+
+        operator const T & () const { return get(); }
     };
 
     template <>
@@ -56,6 +55,12 @@ namespace events {
     public:
         result_t(uint32_t error = 0, const char * message = nullptr) : error{ { static_cast<int>(error), std::system_category() }, message } {}
         explicit operator bool() const noexcept { return error.message == nullptr && error.value.value() == 0; }
+
+        const error_t * try_get_error() const noexcept {
+            if(!operator bool())
+                return &error;
+            return nullptr;
+        }
     };
 
 }

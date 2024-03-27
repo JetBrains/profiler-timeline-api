@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../include/events.hpp"
+#include "events.hpp"
 #include <guiddef.h>
 
 namespace events {

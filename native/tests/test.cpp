@@ -1,5 +1,5 @@
 #include "../include/etw_provider_api.hpp"
-#include "debug_output.hpp"
+#include "../include/debug_output.hpp"
 #include <iostream>
 #include <string>
 
