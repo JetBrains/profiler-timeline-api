@@ -10,7 +10,7 @@ add_executable(test_event_generator
         include/etw_provider_api.hpp
         tests/test.cpp)
 
-add_library(profiler-timeline-api SHARED
+add_library(profiler_timeline_api SHARED
         include/debug_output.hpp
         include/utility.hpp
         include/events.hpp
