@@ -15,10 +15,7 @@ bool check_result(const result_t<T> & result, char ** error) noexcept {
             return false;
         }
     }
-    catch(...) {
-        *error = nullptr;
-        return false;
-    }
+    catch(...) { return false; }
     return true;
 }
 
@@ -40,21 +37,21 @@ void __stdcall OnProviderEnableTrampoline(bool isEnabled, uint64_t matchAnyKeywo
 }
 
 extern "C" __declspec(dllexport)
-    uint64_t __cdecl RegisterProvider(uint64_t onEnableCallback, char ** error)
+uint64_t __cdecl RegisterProvider(uint64_t onEnableCallback, char ** error)
 {
     result_t<uint64_t> handle = register_provider<&OnProviderEnableTrampoline>(JetBrains_Common_DebugOutput::guid, reinterpret_cast<void *>(onEnableCallback));
     return check_result(handle, error) ? handle : 0;
 }
 
 extern "C" __declspec(dllexport)
-bool __cdecl UnregisterProvider(uint64_t providerHandle, char ** error)
+void __cdecl UnregisterProvider(uint64_t providerHandle, char ** error)
 {
-    return check_result(unregister_provider(providerHandle), error);
+    check_result(unregister_provider(providerHandle), error);
 }
 
 extern "C" __declspec(dllexport)
-bool WriteDebugOutput(uint64_t providerHandle, const char * str, char ** error)
+void WriteDebugOutput(uint64_t providerHandle, const char * str, char ** error)
 {
     using dbg_output = JetBrains_Common_DebugOutput::DebugOutput;
-    return check_result(write_event(providerHandle, { dbg_output::id, dbg_output::version }, dbg_output::data::to_tuple({ static_cast<uint32_t>(GetCurrentProcessId()), str })), error);
+    check_result(write_event(providerHandle, { dbg_output::id, dbg_output::version }, dbg_output::data::to_tuple({ static_cast<uint32_t>(GetCurrentProcessId()), str })), error);
 }
