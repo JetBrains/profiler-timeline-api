@@ -12,7 +12,7 @@ namespace events {
 #define PROVIDER_BEGIN(_name, ...) \
     struct _name { \
         static inline constexpr const char * name = #_name; \
-        static inline constexpr GUID guid##__VA_ARGS__;
+        static inline constexpr GUID guid{__VA_ARGS__};
 
 #define PROVIDER_END };
 

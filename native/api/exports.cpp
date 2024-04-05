@@ -1,5 +1,6 @@
 #include "../include/etw_provider_api.hpp"
 #include "../include/debug_output.hpp"
+#include <cstring>
 #include <string>
 
 using namespace events;
@@ -40,7 +41,7 @@ extern "C" __declspec(dllexport)
 uint64_t __cdecl RegisterProvider(uint64_t onEnableCallback, char ** error)
 {
     result_t<uint64_t> handle = register_provider<&OnProviderEnableTrampoline>(JetBrains_Common_DebugOutput::guid, reinterpret_cast<void *>(onEnableCallback));
-    return check_result(handle, error) ? handle : 0;
+    return check_result(handle, error) ? handle.get() : 0;
 }
 
 extern "C" __declspec(dllexport)
