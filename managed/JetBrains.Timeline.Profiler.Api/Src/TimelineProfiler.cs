@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using JetBrains.Timeline.Profiler.Api.Impl;
+﻿using JetBrains.Timeline.Profiler.Api.Impl;
 
 namespace JetBrains.Timeline.Profiler.Api;
 
@@ -11,7 +10,7 @@ public sealed class TimelineProfiler : IDisposable
   private readonly ulong myProviderHandle;
   private bool myDisposed = false;
 
-  public delegate int OnProviderEnabled(bool isEnabled, ulong matchAnyKeyword, ulong matchAllKeyword);
+  public delegate void OnProviderEnabled(bool isEnabled, ulong matchAnyKeyword, ulong matchAllKeyword);
 
   public TimelineProfiler(string binDirectory, OnProviderEnabled onProviderEnabled)
   {

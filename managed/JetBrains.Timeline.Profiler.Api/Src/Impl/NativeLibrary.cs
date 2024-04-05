@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.ComponentModel;
 using System.Runtime.InteropServices;
 
 namespace JetBrains.Timeline.Profiler.Api.Impl;
@@ -11,7 +11,7 @@ internal sealed class NativeLibrary : IDisposable
   {
     myHandle = Kernel32Dll.LoadLibraryW(libraryPath);
     if (myHandle == IntPtr.Zero)
-      throw new DllNotFoundException("Failed to load shared library " + libraryPath);
+      throw new Win32Exception(Marshal.GetLastWin32Error(), "Failed to load shared library " + libraryPath);
   }
 
   public TDelegate GetNativeFunction<TDelegate>(string functionName) where TDelegate : Delegate
