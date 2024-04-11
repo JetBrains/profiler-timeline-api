@@ -43,7 +43,7 @@ namespace events::etw {
             ? EventRegister(
                 &provider_guid,
                 &detail::on_provider_enabled<provider_enabled_cb>,
-                &cb_context, &reg_handle)
+                cb_context, &reg_handle)
             : EventRegister(&provider_guid, nullptr, nullptr, &reg_handle);
 
         if(status != ERROR_SUCCESS)

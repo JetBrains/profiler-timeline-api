@@ -42,6 +42,9 @@ internal sealed class TimelineProfilerInterop : IDisposable
   public delegate void WriteDebugOutputDelegate(ulong providerHandle, [MarshalAs(UnmanagedType.LPStr)] string str, ref IntPtr errorMessage);
 
   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+  public delegate void OnProviderEnabled(int isEnabled, ulong matchAnyKeyword, ulong matchAllKeyword);
+
+  [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
   private delegate void ReleaseStringDelegate(IntPtr str);
 
   private readonly NativeLibrary myLibrary;
@@ -58,7 +61,7 @@ internal sealed class TimelineProfilerInterop : IDisposable
     RegisterProvider = myLibrary.GetNativeFunction<RegisterProviderDelegate>("RegisterProvider");
     UnregisterProvider = myLibrary.GetNativeFunction<UnregisterProviderDelegate>("UnregisterProvider");
     WriteDebugOutput = myLibrary.GetNativeFunction<WriteDebugOutputDelegate>("WriteDebugOutput");
-    myReleaseString = myLibrary.GetNativeFunction<ReleaseStringDelegate>("ReleaseStringDelegate");
+    myReleaseString = myLibrary.GetNativeFunction<ReleaseStringDelegate>("ReleaseString");
   }
 
   public void CheckError(IntPtr errorMessage)

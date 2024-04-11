@@ -10,14 +10,15 @@ public sealed class TimelineProfiler : IDisposable
   private readonly ulong myProviderHandle;
   private bool myDisposed = false;
 
-  public delegate void OnProviderEnabled(bool isEnabled, ulong matchAnyKeyword, ulong matchAllKeyword);
-
-  public TimelineProfiler(string binDirectory, OnProviderEnabled onProviderEnabled)
+  public TimelineProfiler(string binDirectory, Action<bool, ulong, ulong> onProviderEnabled)
   {
     myBinDirectory = binDirectory;
     myProfiler = new TimelineProfilerInterop(myBinDirectory);
 
-    myProviderEnableDelegate = new TimelineProfilerInterop.NativeDelegate(onProviderEnabled);
+    myProviderEnableDelegate = new TimelineProfilerInterop.NativeDelegate((TimelineProfilerInterop.OnProviderEnabled)((isEnabled, matchAnyKeyword, matchAllKeyword) => {
+      onProviderEnabled(isEnabled != 0, matchAnyKeyword, matchAllKeyword);
+    }));
+
     var errorMessage = IntPtr.Zero;
     myProviderHandle = myProfiler.RegisterProvider(myProviderEnableDelegate.GetPointer(), ref errorMessage);
     myProfiler.CheckError(errorMessage);

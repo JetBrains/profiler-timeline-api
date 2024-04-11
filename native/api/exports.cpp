@@ -30,7 +30,7 @@ void ReleaseString(char * error)
     delete [] error;
 }
 
-using OnProviderEnableCallback = void(*)(bool isEnabled, uint64_t matchAnyKeyword, uint64_t matchAllKeyword);
+using OnProviderEnableCallback = void(*)(int32_t isEnabled, uint64_t matchAnyKeyword, uint64_t matchAllKeyword);
 
 void __stdcall OnProviderEnableTrampoline(bool isEnabled, uint64_t matchAnyKeyword, uint64_t matchAllKeyword, void * onEnableCallback)
 {
